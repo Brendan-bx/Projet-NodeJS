@@ -1,4 +1,3 @@
-let movies = require('./' + 'movies.json')
 const { title, argv } = require('process');
 let start = new Date().getTime();
 
@@ -17,7 +16,7 @@ const { domainToUnicode } = require('url');
 switch (process.argv[3]) {
     case ("transform"):
         let array = []
-        let fichierLEcture = process.argv[4];
+        let movies = require(process.argv[4])
         let fichierEcriture = process.argv[5];
         for (i = 0; i < movies.length; i++) {
             //console.log(movies[2].release_date)
@@ -25,17 +24,10 @@ switch (process.argv[3]) {
             let date = new Date(movies[i].release_date * 1000);
             let Year = date.getFullYear();
             movies[i].title = movies[i].title + " " + "(" + Year + ")";
-
-
-
-
-            writable(fichierLEcture, fichierEcriture);
-
+            writable(movies[i], fichierEcriture);
         }
         break;
-    case ("test"):
-        console.log("oui");
-        break;
+
 
 
 }
@@ -45,7 +37,7 @@ function writable(fichierLEcture, fichierEcriture) {
     let writable = JSON.stringify(fichierLEcture, null, "\t");
     let fs = require('fs');
     fs.appendFileSync(fichierEcriture, writable);
-}
+};
 
 let stop = new Date().getTime();
 console.log("time : " + (stop - start));
