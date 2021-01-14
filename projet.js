@@ -1,5 +1,5 @@
 let movies = require('./' + 'movies.json')
-const { title } = require('process');
+const { title, argv } = require('process');
 let start = new Date().getTime();
 
 console.log(process.argv)
@@ -14,24 +14,28 @@ const { domainToUnicode } = require('url');
 //let test= 0;
 
 
-if (process.argv[3] == "transform") {
+switch (process.argv[3]) {
+    case ("transform"):
+        let array = []
+        let fichierLEcture = process.argv[4];
+        let fichierEcriture = process.argv[5];
+        for (i = 0; i < movies.length; i++) {
+            //console.log(movies[2].release_date)
+
+            let date = new Date(movies[i].release_date * 1000);
+            let Year = date.getFullYear();
+            movies[i].title = movies[i].title + " " + "(" + Year + ")";
 
 
-    let array = []
-    for (i = 0; i < movies.length; i++) {
-        //console.log(movies[2].release_date)
-
-        let date = new Date(movies[i].release_date * 1000);
-        let Year = date.getFullYear();
-        movies[i].title = movies[i].title + " " + "(" + Year + ")";
 
 
+            writable(fichierLEcture, fichierEcriture);
 
-
-        writable(movies[i], 'movies.out.json');
-
-    }
-
+        }
+        break;
+    case ("test"):
+        console.log("oui");
+        break;
 
 
 }
