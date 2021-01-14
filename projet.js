@@ -1,3 +1,4 @@
+let movies = require('./' + 'movies.json')
 const { title } = require('process');
 let start = new Date().getTime();
 
@@ -10,44 +11,37 @@ if (process.argv[3] == "exit") {
 
 const fs = require('fs');
 const { domainToUnicode } = require('url');
-let donnees;
-let array = []
 //let test= 0;
 
 
 if (process.argv[3] == "transform") {
 
 
+    let array = []
+    for (i = 0; i < movies.length; i++) {
+        //console.log(movies[2].release_date)
+
+        let date = new Date(movies[i].release_date * 1000);
+        let Year = date.getFullYear();
+        movies[i].title = movies[i].title + " " + "(" + Year + ")";
 
 
-    function writable(fichier,) {
-        let writable = JSON.stringify(array, null, "\t");
-        fs.appendFileSync(fichier, writable);
+
+
+        writable(movies[i], 'movies.out.json');
+
     }
 
 
-    fs.readFile('movies.json', function transform(erreur, fichier) {
-        for (i = 0; i < 5; i++) {
-            let movies = JSON.parse(fichier)
-            //console.log(movies[2].release_date)
-
-            let date = new Date(movies[i].release_date * 1000);
-
-
-            donnees = `movies:${movies[i].title} (${date.getFullYear()}) release date : ${movies[i].release_date}`
-
-
-            console.log(donnees);
-            array.push(donnees);
-            console.log(i);
-            writable('movies.out.json')
-
-        }
-
-
-
-    })
 
 }
+
+
+function writable(fichierLEcture, fichierEcriture) {
+    let writable = JSON.stringify(fichierLEcture, null, "\t");
+    let fs = require('fs');
+    fs.appendFileSync(fichierEcriture, writable);
+}
+
 let stop = new Date().getTime();
 console.log("time : " + (stop - start));
